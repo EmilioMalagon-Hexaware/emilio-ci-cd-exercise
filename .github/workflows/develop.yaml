@@ -24,7 +24,15 @@ jobs:
       - name: Test coverage
 
         run: npm run test
-
-      - name: Create Pull Request
-
-        uses: peter-evans/create-pull-request@v4
+  pull-request:
+    name: Pull Request to Main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: repo-sync/pull-request@v3
+        with:
+          destination_branch: "main"
+          pr_title: "Pulling develop into main"
+          pr_body: "Automated PR"
+          pr_draft: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
