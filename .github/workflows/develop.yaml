@@ -24,3 +24,7 @@ jobs:
       - name: Test coverage
 
         run: npm run test
+
+      - name: Create Pull Request
+
+        uses: peter-evans/create-pull-request@v4
