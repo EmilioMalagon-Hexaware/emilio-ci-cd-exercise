@@ -37,8 +37,8 @@ jobs:
 
       - uses: actions/setup-node@v3
 
-      with:
-        node-version: "16"
+        with:
+          node-version: "16"
 
       - name: Get Branch Name
         id: branch-name
@@ -49,5 +49,3 @@ jobs:
 
         env:
           GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
-
-
