@@ -6,7 +6,7 @@ on:
       - develop/*
 
 jobs:
-  test-code:
+  QA:
     runs-on: ubuntu-latest
     environment:
       name: QA
@@ -27,20 +27,26 @@ jobs:
 
         run: npm run test
 
-      - name: Create PR
-        uses: medlypharmacy/create-pr-action@main
+  PULL-REQUEST:
+    needs: QA
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+
+      with:
+        node-version: "16"
+
+      - name: Get Branch Name
+        id: branch-name
+        uses: ypicard/get-branch-name-github-action@v1
+
+      - name: pull-request
+        run: gh pr create --base main --head ${{ steps.branch-name.outputs.branch }} --title "Pulling ${{ steps.branch-name.outputs.branch }} into main" --body "Pull Requst from actions"
+
         env:
-          GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
-          HEAD_BRANCH: ci-cd-implement
-          BASE_BRANCH: main
-      - name: Approve PR
-        uses: juliangruber/approve-pull-request-action@v2.0.0
-        with:
-          number: 1
-          github-token: ${{ secrets.SECRET_APPROVE_TOKEN }}
-      - name: Merge PR
-        uses: juliangruber/merge-pull-request-action@v1
-        with:
-          number: 1
-          github-token: ${{ secrets.SECRET_MERGE_TOKEN }}
-          method: squash
+          GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
+
+
