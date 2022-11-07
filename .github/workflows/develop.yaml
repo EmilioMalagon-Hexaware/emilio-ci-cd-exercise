@@ -31,7 +31,6 @@ jobs:
         uses: medlypharmacy/create-pr-action@main
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
-          HEAD_BRANCH: develop/ci-cd-implement
           BASE_BRANCH: main
       - name: Approve PR
         uses: juliangruber/approve-pull-request-action@v2.0.0
