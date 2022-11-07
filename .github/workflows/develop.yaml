@@ -8,6 +8,8 @@ on:
 jobs:
   test-code:
     runs-on: ubuntu-latest
+    enviroment:
+      name: QA
 
     steps:
       - uses: actions/checkout@v3
@@ -29,3 +31,14 @@ jobs:
         uses: medlypharmacy/create-pr-action@main
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
+      - name: Approve PR
+        uses: juliangruber/approve-pull-request-action@v1
+        with:
+          number: 1
+          github-token: ${{ secrets.SECRET_APPROVE_TOKEN }}
+      - name: Merge PR
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          number: 1
+          github-token: ${{ secrets.SECRET_MERGE_TOKEN }}
+          method: squash
