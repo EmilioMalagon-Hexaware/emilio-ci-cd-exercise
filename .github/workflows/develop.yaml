@@ -25,10 +25,9 @@ jobs:
 
         run: npm run test
 
-      - uses: repo-sync/pull-request@v2
-        with:
-          destination_branch: "main"
-          pr_title: "Pulling develop into main"
-          pr_body: "Automated PR"
-          pr_draft: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create PR
+        uses: medlypharmacy/create-pr-action@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_BRANCH: develop/ci-cd-implement
+          BASE_BRANCH: main
