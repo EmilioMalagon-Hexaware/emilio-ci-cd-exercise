@@ -34,7 +34,7 @@ jobs:
           HEAD_BRANCH: develop/ci-cd-implement
           BASE_BRANCH: main
       - name: Approve PR
-        uses: juliangruber/approve-pull-request-action@v1
+        uses: juliangruber/approve-pull-request-action@v2.0.0
         with:
           number: 1
           github-token: ${{ secrets.SECRET_APPROVE_TOKEN }}
