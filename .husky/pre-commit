@@ -3,17 +3,17 @@
 
 branch=$(git branch | grep '*' | sed 's/* //')
 
-# if [ $branch = "main" ]
-# then
-#     echo -e "You can not commit to main"
-#     exit 1
-# fi
+if [ $branch = "main" ]
+then
+    echo -e "You can not commit to main"
+    exit 1
+fi
 
-# if [ $branch = "master" ]
-# then
-#     echo -e "You can not commit to master"
-#     exit 1
-# fi
+if [ $branch = "master" ]
+then
+    echo -e "You can not commit to master"
+    exit 1
+fi
 
 npm run lint
 npm run test
