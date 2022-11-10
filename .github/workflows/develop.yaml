@@ -11,35 +11,31 @@ on:
 env:
   CI: false
 
-# permissions:
-#   contents: read
-#   pages: write
-#   id-token: write
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-# concurrency:
-#   group: "pages"
-#   cancel-in-progress: true
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   QA:
     runs-on: ubuntu-latest
-    environment:
-      name: QA
-
     steps:
       - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v3
-
         with:
           node-version: "16"
 
       - name: Install Dependencies
-
         run: npm install
 
-      - name: Test coverage
+      - name: Test Lint
+        run: npm run lint
 
+      - name: Test coverage
         run: npm run test
 
   PULL-REQUEST:
@@ -48,9 +44,7 @@ jobs:
     permissions: write-all
     steps:
       - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v3
-
         with:
           node-version: "16"
 
@@ -62,3 +56,4 @@ jobs:
         run: gh pr create --base main --head ${{ steps.branch-name.outputs.branch }} --title "Pulling ${{ steps.branch-name.outputs.branch }} into main" --body "Pull Requst from actions"
         env:
           GH_TOKEN: ${{ secrets.SECRET_OTHER }}
+#
