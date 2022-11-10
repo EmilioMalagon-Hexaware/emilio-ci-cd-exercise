@@ -55,4 +55,4 @@ jobs:
       - name: pull-request
         run: gh pr create --base main --head ${{ steps.branch-name.outputs.branch }} --title "Pulling ${{ steps.branch-name.outputs.branch }} into main" --body "Pull Requst from actions"
         env:
-          GH_TOKEN: ${{ secrets.SECRET_OTHER }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
