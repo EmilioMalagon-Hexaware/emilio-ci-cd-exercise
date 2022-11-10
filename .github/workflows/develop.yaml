@@ -45,8 +45,6 @@ jobs:
   PULL-REQUEST:
     needs: QA
     runs-on: ubuntu-latest
-    environment:
-      name: QA
     permissions: write-all
     steps:
       - uses: actions/checkout@v3
@@ -63,4 +61,4 @@ jobs:
       - name: pull-request
         run: gh pr create --base main --head ${{ steps.branch-name.outputs.branch }} --title "Pulling ${{ steps.branch-name.outputs.branch }} into main" --body "Pull Requst from actions"
         env:
-          GH_TOKEN: ${{ secrets.SECRET_TOKEN }}
+          GH_TOKEN: ${{ secrets.SECRET_OTHER }}
