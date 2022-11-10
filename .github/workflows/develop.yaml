@@ -1,31 +1,58 @@
 name: CD Github Pages
 
 on:
+  pull_request:
   push:
     branches:
       - develop/*
 
-jobs:
-  test-code:
-    runs-on: ubuntu-latest
+  workflow_dispatch:
 
+env:
+  CI: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  QA:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v3
-
         with:
           node-version: "16"
 
       - name: Install Dependencies
-
         run: npm install
 
-      - name: Test coverage
+      - name: Test Lint
+        run: npm run lint
 
+      - name: Test coverage
         run: npm run test
 
-      - name: Create PR
-        uses: medlypharmacy/create-pr-action@main
+  PULL-REQUEST:
+    needs: QA
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: Get Branch Name
+        id: branch-name
+        uses: ypicard/get-branch-name-github-action@v1
+
+      - name: pull-request
+        run: gh pr create --base main --head ${{ steps.branch-name.outputs.branch }} --title "Pulling ${{ steps.branch-name.outputs.branch }} into main" --body "Pull Requst from actions"
         env:
-          GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
